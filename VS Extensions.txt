@@ -1,0 +1,3 @@
+JavaScript (ES6)
+Live Preview (Side by side)
+Live Server

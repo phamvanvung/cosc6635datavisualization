@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bar Chart</title>
+  <script src="../d3/d3.js"></script>
+</head>
+<body>
+  <script>
+    // get the data
+    d3.csv("iris.csv").then(data => {
+      // convert to numeric
+      data.forEach(element => {
+        element['petal.length'] = +element['petal.length'];
+      });
+      // get avg petal length per species
+      let groups = d3.group(data, d => d.species);
+      let avgLengths = []
+      let gIterator = groups.entries()
+      let next = gIterator.next()
+      while (!next.done) {
+        let value = next.value;
+        let petalLengths = value[1].map(d => d["petal.length"]);
+        avgLengths.push({ "species": value[0], "petalLength": d3.mean(petalLengths) });
+        next = gIterator.next()
+      };
+      //Create the bar chart
+      createBarChart(avgLengths);
+    });
+
+    function createBarChart(avgLengths) {
+      let width = 250, height = 250;
+      let margins = { left: 50, top: 50, right: 10, bottom: 50 };
+      let svg = d3.select("body").append('svg')
+        .attr("width", margins.left + margins.right + width)
+        .attr("height", margins.top + margins.bottom + height);
+      let container = svg.append("g")
+        .attr('transform', `translate(${margins.left}, ${margins.top})`);
+      // the scales
+      let xScale = d3.scaleBand()
+        .domain(avgLengths.map(d => d.species))
+        .range([0, width])
+        .padding(0.1);
+      let yScale = d3.scaleLinear()
+        .domain([0, d3.max(avgLengths.map(d => d.petalLength))])
+        .range([height, 0]);
+      // add the bars
+      let bars = container.selectAll(".bar").data(avgLengths).join('rect')
+        .attr("x", d => xScale(d.species))
+        .attr("y", d => yScale(d.petalLength))
+        .attr("width", xScale.bandwidth())
+        .attr("height", d => height - yScale(d.petalLength));
+      // add the x-axis
+      let xAxis = d3.axisBottom(xScale);
+      let xAxisG = svg.append("g")
+        .attr('transform', `translate(${margins.left}, ${margins.top + height})`);
+      xAxisG.call(xAxis);
+
+      // add the y-axis
+      let yAxis = d3.axisLeft(yScale);
+      let yAxisG = svg.append("g")
+        .attr('transform', `translate(${margins.left}, ${margins.top})`);
+      yAxisG.call(yAxis);
+      // Add x label
+      let xLabel = svg.append("g")
+        .attr("transform", `translate(${margins.left + width / 2}, 
+        ${margins.top + height + 30})`)
+        .append("text").text("Species")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle");
+      // Add y label
+      let yLabel = svg.append("g")
+        .attr("transform", `translate(${10}, ${margins.top + height / 2})`)
+        .append('text').text("Petal Length")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .attr("transform", "rotate(-90)");
+      // Add the title
+      let title = svg.append("g")
+        .attr('transform', `translate(${margins.left + width / 2}, ${0})`)
+        .append('text').text("Average petal length per species")
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'hanging');
+    }
+    
+  </script>
+</body>
+
+</html>

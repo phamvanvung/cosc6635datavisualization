@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Basic shapes</title>
+  <script src="../d3/d3.js"></script>
+</head>
+<body>
+  <script>
+    // Create SVG
+    let container = d3.select("body").append("svg") // SVG
+    .attr("width", 500)
+    .attr("height", 500)
+    // Create rectangle
+    container.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", 100)
+    .attr("height", 100)
+    .attr("fill", "black")
+    .attr("stroke-width", 2)
+    .attr("stroke", "red");
+    // Create a circle
+    container.append("circle")
+    .attr("cx", 150)
+    .attr("cy", 50)
+    .attr("r", 50)
+    .attr("fill", "blue")
+    .attr("stroke-width", 2)
+    .attr("stroke", "red");
+    // Create a line
+    container.append("line")
+    .attr("x1", 0)
+    .attr("y1", 100)
+    .attr("x2", 100)
+    .attr("y2", 200)
+    .attr("stroke-width", 2)
+    .attr("stroke", "red");
+    // Create a text
+    container.append("text").text("Some text")
+    .attr("x", 150)
+    .attr("y", 150)
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle");
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>looping</title>
+    </head>
+    <script>
+        const maxVal = 6;
+        console.log("Complete loop");
+        for(let i = 0; i < maxVal; i++){
+            console.log(i);
+        }
+        console.log("Break at 3");
+        for(let i = 0; i < maxVal; i++ ){
+            if(i===3){
+                break;
+            }
+            console.log(i);
+        }
+        console.log("Continue at 3");
+        for(let i=0; i < maxVal; i++){
+            if(i===3){
+                continue;
+            }
+            console.log(i);
+        }
+    </script>
+    <body></body>
+</html>
+

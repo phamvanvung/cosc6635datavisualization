@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>Pie Chart</title>
+  <script src='../d3/d3.js'></script>
+</head>
+<body>
+  <script>
+    // prepare the data
+    d3.csv("cars.csv").then(data => {
+      // count per group
+      let key = "cyl";
+      let groups = d3.group(data, d => d[key]);
+      let gIterator = groups.entries();
+      let next = gIterator.next();
+      let counts = [];
+      while (!next.done) {
+        let value = next.value;
+        let obj = {}
+        obj[key] = value[0];
+        obj.count = value[1].length;
+        counts.push(obj);
+        next = gIterator.next();//move next
+      }
+      createPieChart(counts);
+    });
+
+    function createPieChart(counts) {
+      let width = 250, height = 250;
+      let radius = width / 2;
+      let margins = { left: 15, top: 15, right: 15, bottom: 15 };
+      
+      let svg = d3.select("body").append("svg")
+        .attr("width", width + margins.left + margins.right)
+        .attr("height", height + margins.top + margins.bottom);
+      let container = svg.append("g")
+        .attr('transform', 
+        `translate(${margins.left + width/2}, ${margins.top + height/2})`);
+      // create color scale
+      let colorScale = d3.scaleOrdinal()
+        .domain(["4","6", "8"])
+        .range(["red", "green", "yellow"]);
+      // pie information generator
+      let pie = d3.pie()
+        .value(d => d.count);
+
+      // arc generator
+      let arc = d3.arc()
+        .innerRadius(0)
+        .outerRadius(radius);
+
+      // generate the groups of the pies
+      let parts = container.selectAll(".arc").data(pie(counts)).join('g');
+      // add the arcs
+      let arcs = parts.append("path")
+        .attr("d", arc)
+        .attr("fill", d=>colorScale(d.data["cyl"]))
+        .attr("stroke", "white")
+        .attr("stroke-width", 4);
+      // add the labels
+      let labels = parts.append("text").text(d=>d.data["cyl"] + " cyl")
+      .attr('transform', d=>`translate(${arc.centroid(d)})`)
+      .attr("alignment-baseline", "middle")
+      .attr("text-anchor", "middle");
+      // Add the title
+      let title = svg.append("g")
+        .attr('transform', `translate(${margins.left + width/2}, ${0})`)
+        .append('text').text("Proportions of cars per cyl type")
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'hanging');
+    }
+  </script>
+</body>
+</html>

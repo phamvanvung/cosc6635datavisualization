@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Data Driven Shapes</title>
+        <script src="../d3/d3.js"></script>
+    </head>
+    <body>
+        <script>
+            let dataset = [50, 150, 120, 150, 110, 80];
+            let svg = d3.select("body").append("svg")
+            .attr("width", 500)
+            .attr("height", 500)
+            let g = svg.append("g")
+            .attr("transform", "translate(10, 10)");
+            // Creating bars
+            let barWidth = 20, barSep = 5;
+            let bars = g.selectAll("rect").data(dataset)
+            .enter().append("rect")
+            .attr("x", (d, i)=>{
+                //d is the data item, i is the index
+                return i*(barWidth+barSep);
+            })
+            .attr("y", 0)
+            .attr("width", barWidth)
+            .attr("height", d=>d)
+            .attr("fill", "blue");
+        </script>
+    </body>
+</html>
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Loading data from files</title>
+  <script src="../d3/d3.js"></script>
+</head>
+<body>
+  <script>
+    d3.csv("datafile.csv").then(data=>{
+      // numbers are loaded as string
+      // we need to convert them
+      data.forEach(element => {
+        // the + sign is used to convert
+        element.val = +element.val;
+      });
+      console.log(data);
+    });
+  </script>
+</body>
+</html>

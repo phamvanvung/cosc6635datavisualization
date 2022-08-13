@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>var vs. let</title>
+        <script>
+            function run() {
+                {
+                    var varx = "Function scope"
+                    let letx = "Block scope";
+                    // Both exists in this block
+                    console.log(varx, letx); 
+                }
+                // varx is accessible outside
+                console.log(varx); 
+                // ReferenceError: letx is not accessible
+                console.log(letx); 
+            }
+            run();
+        </script>
+    </head>
+</html>
+

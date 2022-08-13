@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Binding data</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+    </head>
+    <body>
+        <script>
+            let dataset = [1, 2, 3, 4];
+            let newdataset = [3, 5];
+            let selections = d3.selectAll("p");
+            let keyFunction = d=>d; // null; 
+            
+            selections.data(dataset, keyFunction).join(
+                enter=>{
+                    console.log(enter);
+                    enter.append("p").text(d=>d).style("color", "red").attr("id", d=>d);
+                },
+                update=>{
+                    console.log(update);
+                    update.text(d=>d);
+                },
+                exit=>{
+                    console.log(exit);
+                    exit.remove();
+                }
+            );
+
+            selections = d3.selectAll("p");
+            selections.data(newdataset, keyFunction).join(
+                enter=>{
+                    console.log(enter);
+                    enter.append("p").text(d=>d).style("color", "green").attr("id", d=>d);
+                },
+                update=>{
+                    console.log(update);
+                    update.text(d=>d).style("color", "blue").attr("id", d=>d);
+                },
+                exit=>{
+                    console.log(exit);
+                    exit.remove();
+                }
+            );
+            
+        </script>
+    </body>
+</html>
+

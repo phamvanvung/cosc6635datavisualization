@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>D3 Scales</title>
+  <script src="../d3/d3.js"></script>
+</head>
+<body>
+  <script>
+    //Load data
+    d3.csv("datafile.csv").then(data => {
+      //#region codes for bars folded here
+      //data conversion
+      data.forEach(element => {
+        element.val = +element.val;
+      });
+      let xScale = d3.scaleBand()
+        .domain(data.map(d => d.cat)).range([0, 300])
+        .padding(0.1);// padding is 0.1 of the bar width
+      // get the min and max of the values
+      let yMax = d3.max(data.map(d => d.val));
+      // the yScale
+      let yScale = d3.scaleLinear()
+        .domain([0, yMax]).range([300, 0]);
+
+      // create the svg and group
+      let container = d3.select("body").append("svg")
+        .attr("width", 350)
+        .attr("height", 350)
+        .append("g")
+        .attr("transform", "translate(10, 10)");
+      // create the bars
+      container.selectAll("rect").data(data)
+        .enter().append('rect')
+        .attr("x", d => xScale(d.cat))
+        .attr("y", d => yScale(d.val))
+        .attr("width", xScale.bandwidth())
+        .attr("height", d => 300 - yScale(d.val))
+        .attr("fill", "blue")
+      //#endregion
+      
+      //Add x-axis
+      let xAxis = d3.axisBottom(xScale);
+      let xAxisG = container.append("g").call(xAxis);
+      //Move it to the bottom
+      xAxisG.attr("transform", "translate(0, 300)");
+      
+      // Add y-axis
+      let yAxis = d3.axisLeft(yScale);
+      let yAxisG = container.append("g").call(yAxis);
+      // Move the whole container more to the right
+      container.attr("transform", "translate(50, 10)");
+    });
+  </script>
+</body>
+</html>
