@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>Brushing and Highlighting</title>
+  <script src='../../d3/d3.js'></script>
+  <script src="js/scatterplot.js"></script>
+</head>
+<body>
+  <script>
+    // Load the iris data
+    d3.csv("data/iris.csv").then(data => {
+      // convert petal length and width to numeric
+      data.forEach(element => {
+        element["petal.length"] = +element["petal.length"];
+        element["petal.width"] = +element["petal.width"];
+      });
+      createScatterPlot(data);
+    });
+    </script>
+</body>
+</html>
+

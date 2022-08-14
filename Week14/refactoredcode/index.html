@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>Line Chart
+  </title>
+  <script src='../../d3/d3.js'></script>
+  <style>
+    @import url("css/tooltip.css");
+  </style>
+  <script src="js/tooltip.js"></script>
+  <script src="js/stackedbarchart.js"></script>
+</head>
+<body>
+  <div id="tooltip" class="tooltip" ></div>
+  <script>
+    // Load json data
+    d3.json("data/sentiments.json").then(data => {
+      console.log(data);
+      // convert date (year) to numeric
+      data.forEach(element => {
+        element.date = +element.date;
+      });
+      createStackedBarChart(data);
+    });
+  </script>
+</body>
+</html>
